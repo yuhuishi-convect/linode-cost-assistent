@@ -1,0 +1,10 @@
+Plan 	$/Mo 	$/Hr 	RAM 	CPUs 	Storage 	Transfer 	Network In/Out 	
+Dedicated 4 GB 	$30 	$0.045 	4 GB 	2 	80 GB 	4 TB 	40/4 Gbps 	Sign Up
+Dedicated 8 GB 	$60 	$0.09 	8 GB 	4 	160 GB 	5 TB 	40/5 Gbps 	Sign Up
+Dedicated 16 GB 	$120 	$0.18 	16 GB 	8 	320 GB 	6 TB 	40/6 Gbps 	Sign Up
+Dedicated 32 GB 	$240 	$0.36 	32 GB 	16 	640 GB 	7 TB 	40/7 Gbps 	Sign Up
+Dedicated 64 GB 	$480 	$0.72 	64 GB 	32 	1280 GB 	8 TB 	40/8 Gbps 	Sign Up
+Dedicated 96 GB 	$720 	$1.08 	96 GB 	48 	1920 GB 	9 TB 	40/9 Gbps 	Sign Up
+Dedicated 128 GB 	$960 	$1.44 	128 GB 	50 	2500 GB 	10 TB 	40/10 Gbps 	Sign Up
+Dedicated 256 GB 	$1,920 	$2.88 	256 GB 	56 	5000 GB 	11 TB 	40/11 Gbps 	Sign Up
+Dedicated 512 GB 	$3,840 	$5.76 	512 GB 	64 	7200 GB 	12 TB 	40/12 Gbps 	Sign Up

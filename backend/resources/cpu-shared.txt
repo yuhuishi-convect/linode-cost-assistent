@@ -1,0 +1,11 @@
+Plan 	$/Mo 	$/Hr 	RAM 	CPUs 	Storage 	Transfer 	Network In/Out 	
+Nanode 1 GB 	$5 	$0.0075 	1 GB 	1 	25 GB 	1 TB 	40/1 Gbps 	Sign Up
+Linode 2 GB 	$10 	$0.015 	2 GB 	1 	50 GB 	2 TB 	40/2 Gbps 	Sign Up
+Linode 4 GB 	$20 	$0.03 	4 GB 	2 	80 GB 	4 TB 	40/4 Gbps 	Sign Up
+Linode 8 GB 	$40 	$0.06 	8 GB 	4 	160 GB 	5 TB 	40/5 Gbps 	Sign Up
+Linode 16 GB 	$80 	$0.12 	16 GB 	6 	320 GB 	8 TB 	40/6 Gbps 	Sign Up
+Linode 32 GB 	$160 	$0.24 	32 GB 	8 	640 GB 	16 TB 	40/7 Gbps 	Sign Up
+Linode 64 GB 	$320 	$0.48 	64 GB 	16 	1280 GB 	20 TB 	40/9 Gbps 	Sign Up
+Linode 96 GB 	$480 	$0.72 	96 GB 	20 	1920 GB 	20 TB 	40/10 Gbps 	Sign Up
+Linode 128 GB 	$640 	$0.96 	128 GB 	24 	2560 GB 	20 TB 	40/11 Gbps 	Sign Up
+Linode 192 GB 	$960 	$1.44 	192 GB 	32 	3840 GB 	20 TB 	40/12 Gbps 	Sign Up

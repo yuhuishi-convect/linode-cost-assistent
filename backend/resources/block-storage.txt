@@ -1,0 +1,12 @@
+Storage 	$/Mo 	
+10 GB 	$1 	Sign Up
+20 GB 	$2 	Sign Up
+40 GB 	$4 	Sign Up
+80 GB 	$8 	Sign Up
+160 GB 	$16 	Sign Up
+320 GB 	$32 	Sign Up
+640 GB 	$64 	Sign Up
+1280 GB 	$128 	Sign Up
+2560 GB 	$256 	Sign Up
+5120 GB 	$512 	Sign Up
+10240 GB 	$1,024 	Sign Up

@@ -1,0 +1,12 @@
+Storage 	$/Mo 	Outbound Transfer 	Objects / Cluster 	
+250 GB 	$5 	1 TB 	Up to 50 Million 	Sign Up
+500 GB 	$10 	1 TB 	Up to 50 Million 	Sign Up
+1 TB 	$20 	1 TB 	Up to 50 Million 	Sign Up
+5 TB 	$100 	1 TB 	Up to 50 Million 	Sign Up
+10 TB 	$200 	1 TB 	Up to 50 Million 	Sign Up
+20 TB 	$400 	1 TB 	Up to 50 Million 	Sign Up
+30 TB 	$600 	1 TB 	Up to 50 Million 	Sign Up
+40 TB 	$800 	1 TB 	Up to 50 Million 	Sign Up
+50 TB 	$1,000 	1 TB 	Up to 50 Million 	Sign Up
+
+$0.02 / GB Additional Storage,  $0.01 / GB Additional Outbound Transferred

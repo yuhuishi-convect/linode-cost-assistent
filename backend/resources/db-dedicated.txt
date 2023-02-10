@@ -1,0 +1,21 @@
+Instance Type 	1 Node 	3 Nodes 	
+Dedicated 4 GB 	$65 	$195 	Sign Up
+Dedicated 8 GB 	$130 	$390 	Sign Up
+Dedicated 16 GB 	$260 	$780 	Sign Up
+Dedicated 32 GB 	$520 	$1,560 	Sign Up
+Dedicated 64 GB 	$1,040 	$3,120 	Sign Up
+Dedicated 96 GB 	$1,560 	$4,680 	Sign Up
+Dedicated 128 GB 	$2,080 	$6,240 	Sign Up
+Dedicated 256 GB 	$4,160 	$12,480 	Sign Up
+Dedicated 512 GB 	$8,320 	$24,960 	Sign Up
+Instance Type 	1 Node 	3 Nodes 	
+Linode 1 GB 	$15 	$35 	Sign Up
+Linode 2 GB 	$30 	$70 	Sign Up
+Linode 4 GB 	$60 	$140 	Sign Up
+Linode 8 GB 	$120 	$280 	Sign Up
+Linode 16 GB 	$240 	$560 	Sign Up
+Linode 32 GB 	$480 	$1,120 	Sign Up
+Linode 64 GB 	$960 	$2,240 	Sign Up
+Linode 96 GB 	$1,440 	$3,360 	Sign Up
+Linode 128 GB 	$1,920 	$4,480 	Sign Up
+Linode 192 GB 	$2,880 	$6,720 	Sign Up
