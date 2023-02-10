@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 )
 
@@ -71,6 +72,12 @@ func readAllPriceInfo() (string, error) {
 func main() {
 	// read the price info
 	content, err := readAllPriceInfo()
+	if err != nil {
+		panic(err)
+	}
+
+	// load the env file
+	err = godotenv.Load()
 	if err != nil {
 		panic(err)
 	}

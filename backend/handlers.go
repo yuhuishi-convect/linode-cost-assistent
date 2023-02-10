@@ -1,7 +1,10 @@
 package main
 
 import (
+	"errors"
+	"regexp"
 	"strconv"
+	"strings"
 
 	"github.com/labstack/echo/v4"
 )
@@ -61,6 +64,69 @@ func prepareUseCaseDesc(uc *UseCase) string {
 	desc += "The average image density on each page is " + string(*uc.ImageDensity) + "."
 
 	return desc
+}
+
+// prepare the prompt to get the architecture design from the openAI API
+func preparePromptArch(desc string, pricing string) string {
+	result := "Pricing information:\n"
+	result += pricing
+	result += "\n"
+	result += "Use case description:\n"
+	result += desc
+	result += "\n"
+	result += "Architecture design:\n"
+
+	return result
+}
+
+// prepare the prompt to get the resource table from the openAI API
+func preparePromptResourceTable(desc string) string {
+	result := desc
+	result += "\n"
+	result += "Resources and costs:\n"
+	result += "```markdown\n"
+	result += "| Component | Spec | Units | Cost/month | Description |\n"
+	return result
+
+}
+
+type Resource struct {
+	Component string
+	Spec      string
+	Units     string
+	Cost      string
+	Desc      string
+}
+
+// extract the table of resources from the response
+func extractResourceTableFromResponse(response string) ([]Resource, error) {
+	markdownTablePattern := regexp.MustCompile("(?s)Resources and costs:\n```markdown\n(.*)\n")
+
+	matches := markdownTablePattern.FindStringSubmatch(response)
+	if len(matches) < 2 {
+		return nil, errors.New("failed to extract markdown table from response")
+	}
+
+	// parse the markdown table
+	table := matches[1]
+	tableRows := strings.Split(table, "\n")
+	resources := []Resource{}
+	for _, row := range tableRows {
+		if row == "" {
+			continue
+		}
+		columns := strings.Split(row, "|")
+		resources = append(resources, Resource{
+			Component: columns[1],
+			Spec:      columns[2],
+			Units:     columns[3],
+			Cost:      columns[4],
+			Desc:      columns[5],
+		})
+	}
+
+	return resources, nil
+
 }
 
 // handler function that accepts a UserCase struct as input, and returns a string
