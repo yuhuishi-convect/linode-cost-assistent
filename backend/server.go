@@ -82,6 +82,7 @@ func main() {
 	e.GET("/health", func(c echo.Context) error {
 		return c.String(200, "OK")
 	})
+	e.POST("/usecase", HandleUseCase)
 	e.Logger.Fatal(e.Start(":8080"))
 
 }
