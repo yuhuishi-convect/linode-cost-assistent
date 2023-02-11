@@ -2,11 +2,15 @@ package main
 
 import (
 	"errors"
+	"log"
+	"os"
 	"regexp"
 	"strconv"
 	"strings"
 
 	"github.com/labstack/echo/v4"
+
+	gogpt "github.com/sashabaranov/go-gpt3"
 )
 
 // handler functions
@@ -133,7 +137,7 @@ func extractResourceTableFromResponse(response string) ([]Resource, error) {
 
 		// if the component is total, ignore it
 		// if the component is empty, ignore it
-		if resource.Component == "Total" || resource.Component == "" {
+		if resource.Component == "Component" || resource.Component == "Total" || resource.Component == "" {
 			continue
 		}
 		// if the component starts with ---, ignore it
@@ -164,4 +168,102 @@ func HandleUseCase(c echo.Context) error {
 			"desc": desc,
 		},
 	)
+}
+
+type UseCaseDescription struct {
+	Desc string `json:"desc"`
+}
+
+func getHandleFuncGivenPricing(pricing string) func(c echo.Context) error {
+	token := os.Getenv("OPENAI_API_KEY")
+	client := gogpt.NewClient(token)
+
+	return func(c echo.Context) error {
+		desc := new(UseCaseDescription)
+		if err := c.Bind(desc); err != nil {
+			return err
+		}
+
+		// get the architecture design from the openAI API
+		prompt := preparePromptArch(desc.Desc, pricing)
+
+		// call the openAI API
+		context := c.Request().Context()
+
+		request := gogpt.CompletionRequest{
+			Model:       gogpt.GPT3TextDavinci003,
+			Prompt:      prompt,
+			MaxTokens:   500,
+			Temperature: 0.2,
+			TopP:        1,
+		}
+
+		response, err := client.CreateCompletion(context, request)
+		if err != nil {
+
+			return c.JSON(
+				500,
+				map[string]string{
+					"error": err.Error(),
+				},
+			)
+		}
+
+		// get the resource table from the openAI API
+		// concat the returned architecture design with the prompt
+		archDesign := response.Choices[0].Text
+		log.Println(archDesign)
+		prompt = prompt + archDesign + "\n"
+		prompt = preparePromptResourceTable(prompt)
+
+		request = gogpt.CompletionRequest{
+			Model:       gogpt.GPT3TextDavinci003,
+			Prompt:      prompt,
+			MaxTokens:   500,
+			Temperature: 0.2,
+			TopP:        1,
+		}
+
+		response, err = client.CreateCompletion(context, request)
+		if err != nil {
+
+			return c.JSON(
+				500,
+				map[string]string{
+					"error": err.Error(),
+				},
+			)
+
+		}
+
+		// concat the returned resource table with the architecture design
+		resourceTable := response.Choices[0].Text
+		log.Println(resourceTable)
+		fullContent := prompt + resourceTable
+
+		// parse the resource table
+		resources, err := extractResourceTableFromResponse(fullContent)
+		if err != nil {
+			// retry once
+			response, err = client.CreateCompletion(context, request)
+			if err != nil {
+				// return the error
+				return c.JSON(
+					500,
+					map[string]string{
+						"error": err.Error(),
+					},
+				)
+			}
+		}
+
+		return c.JSON(
+			200,
+			map[string]interface{}{
+				"arch":      archDesign,
+				"resources": resources,
+			},
+		)
+
+	}
 }

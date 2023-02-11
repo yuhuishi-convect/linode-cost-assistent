@@ -90,6 +90,8 @@ func main() {
 		return c.String(200, "OK")
 	})
 	e.POST("/usecase", HandleUseCase)
+	archFunc := getHandleFuncGivenPricing(content)
+	e.POST("/arch", archFunc)
 	e.Logger.Fatal(e.Start(":8080"))
 
 }
