@@ -115,14 +115,34 @@ func extractResourceTableFromResponse(response string) ([]Resource, error) {
 		if row == "" {
 			continue
 		}
-		columns := strings.Split(row, "|")
-		resources = append(resources, Resource{
-			Component: columns[1],
-			Spec:      columns[2],
-			Units:     columns[3],
-			Cost:      columns[4],
-			Desc:      columns[5],
-		})
+		// rstrip and lstrip the | character
+		row = strings.Trim(row, "|")
+		// split the row by |
+		row = strings.TrimSpace(row)
+		rowParts := strings.Split(row, "|")
+		if len(rowParts) != 5 {
+			return nil, errors.New("failed to parse markdown table")
+		}
+		resource := Resource{
+			Component: strings.TrimSpace(rowParts[0]),
+			Spec:      strings.TrimSpace(rowParts[1]),
+			Units:     strings.TrimSpace(rowParts[2]),
+			Cost:      strings.TrimSpace(rowParts[3]),
+			Desc:      strings.TrimSpace(rowParts[4]),
+		}
+
+		// if the component is total, ignore it
+		// if the component is empty, ignore it
+		if resource.Component == "Total" || resource.Component == "" {
+			continue
+		}
+		// if the component starts with ---, ignore it
+		if strings.HasPrefix(resource.Component, "---") {
+			continue
+		}
+
+		resources = append(resources, resource)
+
 	}
 
 	return resources, nil
