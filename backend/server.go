@@ -9,6 +9,7 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func readPriceInfo(priceFilePath string) (string, error) {
@@ -86,6 +87,9 @@ func main() {
 
 	// start a new echo server
 	e := echo.New()
+	// cors middleware
+	e.Use(middleware.CORS())
+
 	e.GET("/health", func(c echo.Context) error {
 		return c.String(200, "OK")
 	})
