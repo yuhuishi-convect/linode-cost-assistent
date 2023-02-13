@@ -2,15 +2,16 @@
 // and resource table and cost estimate from the backend API
 
 
-import { Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableContainer, Text, Heading, VStack, Divider } from "@chakra-ui/react";
+import { Container, Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableContainer, Text, Heading, VStack, Divider } from "@chakra-ui/react";
 
 
 function ArchitectureSuggestion({ suggestion }) {
     return (
-        <div>
+        <Container maxW={"60%"}>
             <Heading as="h2" size="lg" my={3}>Architecture Suggestion</Heading>
-            <Text>{suggestion}</Text>
-        </div>
+            <Text
+            >{suggestion}</Text>
+        </Container>
     )
 }
 
@@ -30,7 +31,7 @@ function ResourceTable({ resources }) {
     return (
         <div>
             <Heading as="h2" size="lg" my={3}>Resource Table</Heading>
-            <TableContainer>
+            <TableContainer >
                 <Table variant="simple">
                     <Thead>
                         <Tr>
@@ -45,11 +46,11 @@ function ResourceTable({ resources }) {
                         {resources.map((resource) => {
                             return (
                                 <Tr>
-                                    <Td>{resource.component}</Td>
-                                    <Td>{resource.spec}</Td>
-                                    <Td>{resource.units}</Td>
-                                    <Td>{resource.cost}</Td>
-                                    <Td>{resource.desc}</Td>
+                                    <Td>{resource.Component}</Td>
+                                    <Td>{resource.Spec}</Td>
+                                    <Td>{resource.Units}</Td>
+                                    <Td>{resource.Cost}</Td>
+                                    <Td>{resource.Desc}</Td>
                                 </Tr>
                             )
                         }

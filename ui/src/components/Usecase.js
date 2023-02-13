@@ -49,22 +49,22 @@ function GuidedFormUseCase(props) {
     const [
         pv,
         setPv
-    ] = useState(1000);
+    ] = useState(null);
 
     const [
         uv,
         setUv
-    ] = useState(1000);
+    ] = useState(null);
 
     const [
         concurrentUsers,
         setConcurrentUsers
-    ] = useState(100);
+    ] = useState(null);
 
     const [
         qps,
         setQps
-    ] = useState(100);
+    ] = useState(null);
 
     const [
         imageDensity,
@@ -76,6 +76,45 @@ function GuidedFormUseCase(props) {
         setNeedDB
     ] = useState(true);
 
+    // if any of the field changes, we send a request to /api/usecase to get the resource summary
+    // and update the usecase description in the parent component
+    useEffect(() => {
+        // construct the payload, ignore any empty field
+        const data = {
+            "tech": technologyStack,
+            "pv": parseInt(pv),
+            "uv": parseInt(uv),
+            "concurrent_users": parseInt(concurrentUsers),
+            "qps": parseInt(qps),
+            "image_density": imageDensity,
+            "need_db": needDB === "true" ? true : false,
+        }
+        // ignore any empty field or null value
+        Object.keys(data).forEach(key => {
+            if (data[key] === null || data[key] === "") {
+                delete data[key];
+            }
+        })
+
+
+        fetch(process.env.REACT_APP_API_BASE_URL + "/usecase", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        }).then(
+            response => response.json()
+        ).then(
+            data => {
+                props.setUseCase(data["desc"]);
+            }
+        ).catch(
+            error => console.log(error)
+        )
+        console.log(data);
+
+    }, [technologyStack, pv, uv, concurrentUsers, qps, imageDensity, needDB])
 
     return (
         <div>
@@ -164,40 +203,39 @@ export default function Usecase(props) {
     const [useCase, setUseCase] = useState("");
     const [useFreeForm, setUseFreeForm] = useState(true);
     const [costResult, setCostResult] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
 
 
     function onClickGetCost() {
+        setIsLoading(true);
+        console.log("loading")
         // when the user clicks the get cost button, the use case is sent to the parent component
-
-        const dummyResult = {
-            "arch": "We recommend using the following architecture: ",
-            "resources": [
-                {
-                    "component": "Frontend",
-                    "spec": "1x t3a.medium",
-                    "unit": "month",
-                    "cost": "0.02",
-                    "description": "The frontend is a single EC2 instance that serves the static content and proxies the requests to the backend."
-                },
-                {
-                    "component": "Backend",
-                    "spec": "1x t3a.medium",
-                    "unit": "month",
-                    "cost": "0.02",
-                    "description": "The backend is a single EC2 instance that serves the dynamic content."
-                },
-                {
-                    "component": "Database",
-                    "spec": "1x db.t3.medium",
-                    "unit": "month",
-                    "cost": "0.02",
-                    "description": "The database is a single RDS instance."
-                }
-            ]
+        // constrcut the payload
+        const data = {
+            desc: useCase
         }
 
-        setCostResult(dummyResult);
+        // send the request to /arch
+        fetch(process.env.REACT_APP_API_BASE_URL + "/arch", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        }).then(
+            response => response.json()
+        ).then(
+            data => {
+                // update the cost result in the parent component
+                setCostResult(data);
+                setIsLoading(false);
+            }
+        ).catch(
+            error => console.log(error)
+        )
+
+
     }
 
 
@@ -228,11 +266,23 @@ export default function Usecase(props) {
                 <Heading as="h2" size="xl" my={3}>Describe your use case</Heading>
                 <SwitchButton />
                 {useFreeForm ? <FreeFormUseCase setUseCase={setUseCase} /> : <GuidedFormUseCase setUseCase={setUseCase} />}
-                <Button
-                    onClick={onClickGetCost}
-                >
-                    Get Cost
-                </Button>
+                <HStack spacing={4}>
+                    <Button
+                        onClick={onClickGetCost}
+                        colorScheme="whatsapp"
+                        isLoading={isLoading}
+                    >
+                        Get Cost
+                    </Button>
+
+                    <Button
+                        onClick={() => setCostResult(null)}
+                    >
+                        Reset
+                    </Button>
+
+                </HStack>
+
             </VStack>
         </div>
     )
