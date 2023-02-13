@@ -1,0 +1,11 @@
+costgpt.cloud {
+    handle /api/* {
+        reverse_proxy localhost:8080
+    }
+
+    handle {
+        root * /app/frontend/
+        try_files {path} /index.html
+        file_server
+    }
+}
