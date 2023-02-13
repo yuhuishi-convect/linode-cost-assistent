@@ -1,0 +1,14 @@
+# a docker-compose file to start both the frontend and backend
+
+services:
+  frontend:
+    build: ui/
+    ports:
+      - "3000:80"
+    environment:
+      - REACT_APP_API_BASE_URL=localhost:8080
+
+  backend:
+    build: backend/
+    ports:
+      - "8080:8080"
