@@ -5,12 +5,14 @@ FROM node:16.13.0-alpine3.14 AS build-env
 ARG REACT_APP_API_URL
 ENV REACT_APP_API_URL=$REACT_APP_API_URL
 
-
 ADD . /app
 
 WORKDIR /app
 RUN yarn install
-RUN yarn build
+
+# write the env variables to the .env file
+RUN echo "REACT_APP_API_URL=$REACT_APP_API_URL" > .env
+RUN  yarn build
 
 # copy the build folder to the final stage
 # serve the built files with caddy web server

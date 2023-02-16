@@ -97,7 +97,7 @@ function GuidedFormUseCase(props) {
         })
 
 
-        fetch(process.env.REACT_APP_API_BASE_URL + "/usecase", {
+        fetch(process.env.REACT_APP_API_BASE_URL ? process.env.REACT_APP_API_BASE_URL : '/api' + "/usecase", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -217,7 +217,7 @@ export default function Usecase(props) {
         }
 
         // send the request to /arch
-        fetch(process.env.REACT_APP_API_BASE_URL + "/arch", {
+        fetch(process.env.REACT_APP_API_BASE_URL ? process.env.REACT_APP_API_BASE_URL : '/api' + "/arch", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
