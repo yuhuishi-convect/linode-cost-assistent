@@ -1,14 +1,26 @@
 # a docker-compose file to start both the frontend and backend
+# use a caddy server to reverse proxy /api/* to the backend
+# and everything else to the frontend
 
 services:
   frontend:
-    build: ui/
-    ports:
-      - "3000:80"
-    environment:
-      - REACT_APP_API_BASE_URL=localhost:8080
+    build:
+      context: ui/
+      args:
+        - REACT_APP_API_BASE_URL=http://backend:8080
 
   backend:
     build: backend/
+    # mount .env file to backend container
+    env_file:
+      - backend/.env
+
+  caddy:
+    image: caddy:2.4.5-alpine
     ports:
-      - "8080:8080"
+      - 80:80
+      - 443:443
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ./caddy/caddy_data:/data
+      - ./caddy/caddy_config:/config

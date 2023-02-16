@@ -1,6 +1,11 @@
 # build and run the frontend written in react in a multi-stage build
 
 FROM node:16.13.0-alpine3.14 AS build-env
+
+ARG REACT_APP_API_URL
+ENV REACT_APP_API_URL=$REACT_APP_API_URL
+
+
 ADD . /app
 
 WORKDIR /app
