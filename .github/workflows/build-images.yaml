@@ -29,7 +29,6 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: ./ui
-        file: ./Dockerfile
         push: true
         tags: ghcr.io/${{ github.repository_owner }}/costgpt-ui:latest
 
@@ -37,7 +36,6 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: ./backend
-        file: ./Dockerfile
         push: true
         tags: ghcr.io/${{ github.repository_owner }}/costgpt-api:latest
 
