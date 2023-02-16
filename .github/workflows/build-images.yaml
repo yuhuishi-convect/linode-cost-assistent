@@ -5,7 +5,7 @@ name: Build and push Docker images
 on:
   push: # run on push to master
     branches:
-      - master
+      - main
   
 jobs:
   build-and-push:
