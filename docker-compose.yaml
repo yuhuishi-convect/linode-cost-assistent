@@ -12,11 +12,11 @@ services:
   backend:
     build: backend/
     # mount .env file to backend container
-    env_file:
-      - backend/.env
+    volumes:
+      - ./backend/.env:/app/.env
 
   caddy:
-    image: caddy:2.4.5-alpine
+    image: docker.io/caddy:2.4.5-alpine
     ports:
       - 80:80
       - 443:443
