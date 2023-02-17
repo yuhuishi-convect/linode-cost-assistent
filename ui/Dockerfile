@@ -18,6 +18,7 @@ RUN  yarn build
 # serve the built files with caddy web server
 
 FROM caddy:2.4.5-alpine
+LABEL or.opencontainers.image.source="https://github.com/yuhuishi-convect/linode-cost-assistent"
 COPY --from=build-env /app/build /usr/share/caddy
 
 # expose port 80

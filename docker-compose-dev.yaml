@@ -4,20 +4,23 @@
 
 services:
   frontend:
-    image: ghcr.io/yuhuishi-convect/costgpt-ui:latest
+    build:
+      context: ui/
+      args:
+        - REACT_APP_API_BASE_URL=/api
 
   backend:
-    image: ghcr.io/yuhuishi-convect/costgpt-api:latest
+    build: backend/
     # mount .env file to backend container
-    volumes:
-      - ./backend/.env:/app/.env
+    env_file:
+      - backend/.env
 
   caddy:
-    image: docker.io/caddy:2.4.5-alpine
+    image: caddy:2.4.5-alpine
     ports:
       - 80:80
       - 443:443
     volumes:
-      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ./caddy/Caddyfile-dev:/etc/caddy/Caddyfile
       - ./caddy/caddy_data:/data
       - ./caddy/caddy_config:/config

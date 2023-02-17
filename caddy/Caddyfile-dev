@@ -1,4 +1,4 @@
-costgpt.cloud {
+* {
     handle /api* {
     uri strip_prefix /api
     reverse_proxy http://backend:8080
