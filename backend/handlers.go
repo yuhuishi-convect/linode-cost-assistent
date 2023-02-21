@@ -180,9 +180,11 @@ func getHandleFuncGivenPricing(pricing string) func(c echo.Context) error {
 
 	return func(c echo.Context) error {
 		desc := new(UseCaseDescription)
+
 		if err := c.Bind(desc); err != nil {
 			return err
 		}
+		log.Println(desc)
 
 		// get the architecture design from the openAI API
 		prompt := preparePromptArch(desc.Desc, pricing)

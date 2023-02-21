@@ -89,13 +89,23 @@ func main() {
 	e := echo.New()
 	// cors middleware
 	e.Use(middleware.CORS())
+	// recover middleware
+	e.Use(middleware.Recover())
+	// logger middleware
+	e.Use(middleware.Logger())
 
 	e.GET("/health", func(c echo.Context) error {
 		return c.String(200, "OK")
 	})
 	e.POST("/usecase", HandleUseCase)
+
+	g := e.Group("/arch")
+
 	archFunc := getHandleFuncGivenPricing(content)
-	e.POST("/arch", archFunc)
+	g.POST("/", archFunc)
+	// rate limit middleware
+	g.Use(middleware.RateLimiter(middleware.NewRateLimiterMemoryStore(10)))
+
 	e.Logger.Fatal(e.Start(":8080"))
 
 }

@@ -1,6 +1,6 @@
 // component to collect information about the use case from the user
 
-import { HStack, VStack, Button, Textarea, Select, Switch, NumberInput, NumberInputField, Heading, FormControl, FormLabel, Text } from "@chakra-ui/react";
+import { useToast, HStack, VStack, Button, Textarea, Select, Switch, NumberInput, NumberInputField, Heading, FormControl, FormLabel, Text } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import ResourceSummary from "./Resource";
 
@@ -96,8 +96,9 @@ function GuidedFormUseCase(props) {
             }
         })
 
-
-        fetch(process.env.REACT_APP_API_BASE_URL ? process.env.REACT_APP_API_BASE_URL : '/api' + "/usecase", {
+        const url = (process.env.REACT_APP_API_BASE_URL ? process.env.REACT_APP_API_BASE_URL : '/api') + "/usecase";
+        console.log(url);
+        fetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -204,6 +205,7 @@ export default function Usecase(props) {
     const [useFreeForm, setUseFreeForm] = useState(true);
     const [costResult, setCostResult] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const toast = useToast();
 
 
 
@@ -216,8 +218,23 @@ export default function Usecase(props) {
             desc: useCase
         }
 
+        // count the number of letters in the use case
+        // if there are more than 1000 letters, alert the user
+        if (useCase.length > 1000) {
+            toast({
+                title: "Use case too long",
+                description: "Please shorten your use case",
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            })
+            setIsLoading(false);
+            return;
+        }
+
         // send the request to /arch
-        fetch(process.env.REACT_APP_API_BASE_URL ? process.env.REACT_APP_API_BASE_URL : '/api' + "/arch", {
+        const url = (process.env.REACT_APP_API_BASE_URL ? process.env.REACT_APP_API_BASE_URL : '/api') + "/arch/";
+        fetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -232,7 +249,24 @@ export default function Usecase(props) {
                 setIsLoading(false);
             }
         ).catch(
-            error => console.log(error)
+            error => {
+                console.log(error);
+                setIsLoading(false);
+
+                // if the error status code is 429, it means that the user has exceeded the rate limit
+                // alert the user
+                if (error.status === 429) {
+                    toast({
+                        title: "Rate limit exceeded",
+                        description: "Please try again later",
+                        status: "error",
+                        duration: 9000,
+                        isClosable: true,
+                    })
+                }
+
+            }
+
         )
 
 
